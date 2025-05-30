@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MARC Landing</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      color: #1f1f1f;
+    }
+
+    header {
+      width: 100%;
+      background-color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 2px;
+      position: fixed;
+      top: 10px;
+      size-adjust: 100px;
+      z-index: 1000;
+      box-shadow: 0 10px 6px rgba(0,0,0,0.05);
+    }
+
+    .logo img {
+      height: 100px;
+    }
+
+    nav {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+      font-size: 16px;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '▾';
+      font-size: 10px;
+      margin-left: 4px;
+    }
+
+    .search-contact {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .search-icon {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .btn-contact {
+      background-color: #012611;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .menu-toggle div {
+      width: 24px;
+      height: 3px;
+      background: #333;
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        display: none;
+        flex-direction: column;
+        background: white;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+
+      nav.show {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .search-contact {
+        display: none;
+      }
+    }
+
+    .hero {
+      background: url('https://www.newscorpaustralia.com/wp-content/uploads/2021/09/Business-iStock-530281593-e1632712250816.jpeg?w=1024') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 150px 5% 50px;
+      color: white;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+
+    .hero-content {
+      max-width: 600px;
+    }
+
+    .hero h5 {
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .hero h2 {
+      font-size: 26px;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .hero .btn-learn {
+      background: #0aad3d;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .dots {
+      margin-top: 40px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ccc;
+    }
+
+    .dot.active {
+      background: #0aad3d;
+    }
+
+
+
+    .about-section {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      background-image: url('https://th.bing.com/th/id/R.566b07e08b7443558626d17913eaa231?rik=ZfVapsToFB9feQ&riu=http%3a%2f%2fxjh-ic.com%2fupload%2f201911%2f29%2f201911291818238758.jpg&ehk=hA7y1LXfVPEnnC%2fwOvbmlEVHLQFLwWGtmp9UezoJtR8%3d&risl=&pid=ImgRaw&r=0'); /* replace with your actual image path */
+      background-size: cover;
+      background-position: left center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      padding: 60px 5%;
+    }
+
+    .about-content {
+      max-width: 600px;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95));
+      padding: 40px;
+    }
+
+    .about-content h4 {
+      text-transform: uppercase;
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .about-content h1 {
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #2f362f;
+      margin-bottom: 25px;
+    }
+
+    .about-content p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      background-color: #038c3e;
+      color: white;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .read-more:hover {
+      background-color: #026d31;
+    }
+
+    .read-more::after {
+      content: '→';
+      margin-left: 10px;
+      font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+      .about-section {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        background-position: center;
+      }
+
+      .about-content {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        width: 100%;
+      }
+
+      .about-content h1 {
+        font-size: 28px;
+      }
+
+      .about-content p {
+        font-size: 15px;
+      }
+    }
+
+
+    .services-header {
+      text-align: left;
+      max-width: 900px;
+      margin-bottom: 40px;
+    }
+
+    .services-header h4 {
+      text-transform: uppercase;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .services-header h2 {
+      font-size: 34px;
+      font-weight: 700;
+      color: #2f362f;
+      margin-bottom: 15px;
+    }
+
+    .services-header p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #666;
+    }
+
+    .card-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 20px;
+      padding-bottom: 20px;
+    }
+
+    .card {
+      position: relative;
+      min-width: 260px;
+      height: 380px;
+      flex: 0 0 auto;
+      border-radius: 4px;
+      overflow: hidden;
+      background-color: #eee;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));
+      color: #fff;
+    }
+
+    .overlay h3 {
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    .overlay h3 span {
+      font-weight: 700;
+    }
+
+    .overlay p {
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 10px 0;
+    }
+
+    .overlay a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    .overlay a::after {
+      content: " →";
+    }
+
+    .simple-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    .simple-caption span {
+      font-weight: 700;
+    }
+
+    .nav-arrows {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .nav-arrows button {
+      width: 40px;
+      height: 40px;
+      background-color: #038c3e;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .services-header h2 {
+        font-size: 24px;
+      }
+      .card {
+        height: 300px;
+        min-width: 220px;
+      }
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .intro p {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      color: #666;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .card {
+      width: 300px;
+      background: white;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card .text {
+      background: #0a3;
+      color: white;
+      padding: 20px;
+      text-align: left;
+      position: relative;
+    }
+
+    .card .text::after {
+      content: '→';
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      font-size: 24px;
+    }
+
+    .cta-section {
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .cta-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    .cta-section button {
+      background: #000;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    footer {
+      background: #0d1b1e;
+      color: white;
+      padding: 50px 20px;
+    }
+
+    footer .footer-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    footer .column {
+      flex: 1 1 200px;
+    }
+
+    footer h4 {
+      margin-bottom: 15px;
+      color: #ccc;
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer ul li {
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: #aaa;
+    }
+
+    footer .social {
+      margin: 20px 0;
+    }
+
+    footer .social img {
+      width: 24px;
+      margin-right: 10px;
+    }
+
+    footer .bottom {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    @media (max-width: 768px) {
+      .cards {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      footer .footer-container {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="https://cdn-images-1.medium.com/max/184/1*dVDeOyiyU16s3_DtTrVV7g@2x.png" alt="MARC Logo">
+    </div>
+
+    <div class="menu-toggle" id="menu-toggle">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <nav id="nav">
+      <a href="#hero">Insights</a>
+      <a href="#about-section">About Us</a>
+      <a href="#">Industries</a>
+      <a href="#services">Services</a>
+      <a href="#">Media</a>
+      <a href="#section">Contact</a>
+    </nav>
+
+    <div class="search-contact">
+      <div class="search-icon">🔍</div>
+      <button class="btn-contact">CONTACT US</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h5>MARC GLOCAL</h5>
+      <h1>A Power that Shines</h1>
+      <h2>your Business</h2>
+      <p>Grow your business & boost up sales with MARC.</p>
+      <button class="btn-learn">Learn More →</button>
+      <div class="dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section">
+    <div class="about-content">
+      <h4>ABOUT US</h4>
+      <h1>We Shape Decisions<br>for the Better</h1>
+      <p>Marc' experience, global reach and state–of–the–art analytics mean that we are better able to deliver the insights and advice that help today’s companies grow their business. The end benefit of all that we do is enabling our clients to make better decisions.</p>
+      <p>MARC is committed to Delivering Excellence & Partnering Success driving Economic Growth.</p>
+      <button class="read-more">Read More</button>
+    </div>
+  </section>
+
+  <script>
+    const toggle = document.getElementById("menu-toggle");
+    const nav = document.getElementById("nav");
+
+    toggle.addEventListener("click", () => {
+      nav.classList.toggle("show");
+    });
+
+    
+  </script>
+
+
+  <section class="services">
+    <div class="services-header">
+      <h4>OUR SERVICES</h4>
+      <h2>Marc Glocal's research provides actionable answers</h2>
+      <p>Our Professional, Business Advisory, and Management Consulting Services drill right down to our clients’ requirements. We navigate their growth with our dynamic skills and expertise, right from strategy, compliance, marketing, operations, systems and legal, to analytics and diligence.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <img src="https://thumbs.dreamstime.com/z/business-woman-tablet-smile-portrait-analytics-internet-research-strategy-career-young-executive-touchscreen-271086001.jpg" alt="Market Research">
+        <div class="simple-caption">MARKET <span>RESEARCH</span></div>
+      </div>
+      <div class="card">
+        <img src="https://th.bing.com/th/id/OIP.qJWbJrJJ9wjBA9nUmur7IwHaFE?w=295&h=202&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Growth Strategy">
+        <div class="overlay">
+          <div style="font-size:24px;">📈</div>
+          <h3>GROWTH <span>STRATEGY</span></h3>
+          <p>Growth strategy is an organization’s plan for overcoming current and future challenges to realize its goals for expansion.</p>
+          <a href="#">Read More</a>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://thumbs.dreamstime.com/z/indian-businesswoman-laptop-25632344.jpg" alt="Mergers and Acquisitions">
+        <div class="simple-caption">MERGERS AND <span>ACQUISITIONS</span></div>
+      </div>
+      <div class="card">
+        <img src="https://www.ringcentral.com/gb/en/blog/wp-content/uploads/2021/05/happy-manager-leads-a-meeting-in-the-office-scaled.jpg" alt="Insights">
+        <div class="simple-caption">INSIGHTS <span>DRIVEN</span></div>
+      </div>
+    </div>
+
+    <div class="nav-arrows">
+      <button>&larr;</button>
+      <button>&rarr;</button>
+    </div>
+  </section>
+
+<section class="section intro">
+    <h5>MARC INSIGHTS</h5>
+    <h2>Opinions, analytics, and thoughts over coffee</h2>
+    <p>Our team of professionals often procrastinate over strongly brewed coffee or well-prepared tea with that zing! The outcome, plenty of insights – from industry opinions, economic updates to maybe, sometimes, just a friendly rant.</p>
+
+    <div class="cards">
+      <div class="card">
+        <img src="https://www.nicor.org.uk/devuret/2024/01/GettyImages-1138202137.jpg" alt="Pharma">
+        <div class="text">
+          Indian Pharma Sector: <br> Way Forward, 2021
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://th.bing.com/th/id/OIP._dWr1EF_WaVpBY76Si6LbQHaE7?rs=1&pid=ImgDetMain" alt="Organic Food">
+        <div class="text">
+          The Organic Food Market: <br> A brief Overview and Outlook, December 2021
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://mitchlevinson.com/wp-content/uploads/2023/03/How-Will-the-New-ChatGPT-and-Open-AI-Revolutionize-the-Business-Landscape.jpg" alt="Information Technology">
+        <div class="text">
+          Information Technology: <br> Way Forward, 2022
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Complete this form & embark on the journey of being data-driven! We’ll reach out to you within a few hours.</h2>
+    <button>Get in touch with us</button>
+  </section>
+
+  <footer>
+    <div class="footer-container">
+      <div class="column">
+        <h1>MARC</h1>
+        <p>Our range of services is very large, and we are constantly expanding it.</p>
+        <div class="social">
+          <img src="https://cdn-icons-png.flaticon.com/24/733/733547.png" alt="Twitter">
+          <img src="https://cdn-icons-png.flaticon.com/24/733/733561.png" alt="Facebook">
+          <img src="https://cdn-icons-png.flaticon.com/24/733/733553.png" alt="YouTube">
+          <img src="https://cdn-icons-png.flaticon.com/24/733/733579.png" alt="LinkedIn">
+        </div>
+      </div>
+
+      <div class="column">
+        <h4>Company</h4>
+        <ul>
+          <li>Insights</li>
+          <li>About Us</li>
+          <li>Industries</li>
+          <li>Services</li>
+          <li>Media</li>
+          <li>Contact Us</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h4>Resources</h4>
+        <ul>
+          <li>Locations</li>
+          <li>Careers</li>
+          <li>Bizpolly</li>
+          <li>Help & FAQ</li>
+          <li>Site map</li>
+          <li>Quick facts</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h4>Contact</h4>
+        <p>📞 +91 99996 28678</p>
+        <p>✉️ contact@marcgolocal.com</p>
+        <p>📍 22nd Floor, CHM Building, Goa 403001</p>
+      </div>
+    </div>
+    <div class="bottom">
+      © 2022 Mangal Analytics and Research Consulting (MARC). All Rights Reserved. Designed by Ideamagix. | <a href="#" style="color:#aaa;">Terms</a> & <a href="#" style="color:#aaa;">Privacy</a>
+    </div>
+  </footer>
+  
+</body>
+</html>
